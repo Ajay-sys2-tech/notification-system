@@ -12,10 +12,19 @@ export const create = async ( notification ) => {
 };
 
 
-export const findAll = async ( userId ) => {
+export const findAll = async ( userId, page, itemsPerPage ) => {
     try {
-        const notifications = await Notification.find({ userId: userId });
-        return notifications;
+        const recordsToSkip = (page-1) * itemsPerPage;
+        const totalRecords = await Notification.countDocuments({});
+        const notifications = await Notification.find({ userId: userId }).skip(recordsToSkip).limit(itemsPerPage);
+        
+        return {
+            notifications,
+            totalRecords: totalRecords,
+            totalPages: Math.ceil(totalRecords/itemsPerPage),
+            recordsInCurrentPage: notifications.length,
+            page: page
+        };
     } catch (error) {
         throw error;
     }
@@ -26,6 +35,21 @@ export const findById = async ( notificationId ) => {
         const notification = await Notification.findById( notificationId );
         console.log(notification);
         return notification;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const updateRead = async ( notificationId ) => {
+    try {
+        const updatedNotification = Notification.findOneAndUpdate(
+            { id: notificationId },
+            { $set: { read: true } }, 
+            { new: true } 
+        );
+
+        return updatedNotification;
+
     } catch (error) {
         throw error;
     }
