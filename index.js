@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import { Server } from "socket.io";
 import './db/conn.js';
+import './kafka/admin.js';
+import { startKafkaConsumer } from './kafka/consumer.js'
 
 import userRegisterRoutes from './routes/userRegister.js';
 import userLoginRoutes from './routes/userLogin.js';
@@ -13,9 +15,10 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-
 app.use(bodyParser.json());
 app.use(express.static("./public"));
+
+startKafkaConsumer(io);
 
 io.on('connection', (socket) => {
     console.log('a user connected ', socket.id);
@@ -34,19 +37,14 @@ io.on('connection', (socket) => {
 app.get('/', (req, res) => {
     res.sendFile("index.html")
 });
-
-
 app.use('/api/register', userRegisterRoutes);
 app.use('/api/login', userLoginRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 
-
-
 app.get('/*', (req, res) => {
     res.send("Page not Found!");
 })
-
 
 
 server.listen(PORT, () => {

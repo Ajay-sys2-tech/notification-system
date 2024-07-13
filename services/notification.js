@@ -1,11 +1,13 @@
 import {create, findAll, findById as findNotificationById, updateRead } from '../repository/notification.js';
 import { findById } from '../repository/user.js';
 import { io } from '../index.js';
+import { sendNotificationToKafka } from '../kafka/producer.js';
 
 export const createNotification = async ( notification) => {
     try {
         const userId = notification.userId;
         const userExists = await findById( userId );
+        console.log("user:  ", userExists);
         if(!userExists){
             return {
                 error: "User does not exist"
@@ -13,9 +15,13 @@ export const createNotification = async ( notification) => {
         }
         else{
             const newNotification = await create(notification);
-            const userEmail = userExists.email;
             const topic = 'notification';
-            io.to(userEmail).emit(topic,  { message: newNotification.message, id: newNotification._id });
+            const message = [{   
+                    key: userExists.email,
+                    value: notification.message
+                }];
+            await sendNotificationToKafka(topic, message);
+            // io.to(userEmail).emit(topic,  { message: newNotification.message, id: newNotification._id });
             return newNotification;
         }
 
