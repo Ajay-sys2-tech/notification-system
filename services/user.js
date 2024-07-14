@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
 import {create, find, update } from '../repository/user.js';
+import { socketExporter as socket  } from '../socket/index.js';
+import { joinRoom } from '../socket/socketHandler.js';
 
 
 export const createUser = async ( user ) => {
@@ -61,6 +63,7 @@ export const loginUser = async ( userDetails ) => {
               return ({ error: 'Invalid email or password'});
             }
             
+            await joinRoom(socket, {email: userExists.email} )
             return userExists;
         }
     } catch (error) {

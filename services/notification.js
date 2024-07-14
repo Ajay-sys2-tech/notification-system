@@ -20,11 +20,10 @@ export const createNotification = async ( notification) => {
                     key: userExists.email,
                     value: notification.message
                 }];
-            await sendNotificationToKafka(topic, message);
+            await sendNotificationToKafka(topic, message, );
             // io.to(userEmail).emit(topic,  { message: newNotification.message, id: newNotification._id });
             return newNotification;
         }
-
     } catch (error) {
         throw error;
     }
@@ -35,6 +34,7 @@ export const getNotification = async ( notificationId ) => {
         const notification = await findNotificationById( notificationId );
         if(!notification){
             return {
+                status: 404,
                 error: "Invalid notification id"
             }
         }
@@ -52,6 +52,7 @@ export const getNotifications = async ( userId, page, limit ) => {
         const userExists = await findById( userId );
         if(!userExists){
             return {
+                status: 404,
                 error: "User does not exist"
             }
         }

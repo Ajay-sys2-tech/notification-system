@@ -5,10 +5,12 @@ import { Server } from "socket.io";
 import './db/conn.js';
 import './kafka/admin.js';
 import { startKafkaConsumer } from './kafka/consumer.js'
+import swaggerDocs from './swagger.js'
 
 import userRegisterRoutes from './routes/userRegister.js';
 import userLoginRoutes from './routes/userLogin.js';
 import notificationRoutes from './routes/notification.js'
+import { socketConnection } from "./socket/index.js";
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -19,20 +21,7 @@ app.use(bodyParser.json());
 app.use(express.static("./public"));
 
 startKafkaConsumer(io);
-
-io.on('connection', (socket) => {
-    console.log('a user connected ', socket.id);
-    socket.on('disconnect', () => {
-        console.log('user disconnected', socket.id);
-    });
-
-        
-    socket.on('join', (data) => {
-        console.log("Joining Notification ", socket.id);
-        socket.join(data.email);
-    })
-
-});
+socketConnection(io);
 
 app.get('/', (req, res) => {
     res.sendFile("index.html")
@@ -50,7 +39,5 @@ app.get('/*', (req, res) => {
 server.listen(PORT, () => {
     console.log(`server started on port ${PORT}`);
 })
-
-// export default app;
-// export default io;
+swaggerDocs(app, PORT)
 export { io };

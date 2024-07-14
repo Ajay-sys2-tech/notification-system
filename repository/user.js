@@ -29,6 +29,16 @@ export const findById = async ( idToFind ) => {
     }
 }
 
+
+export const findBySocketId = async ( socketIdToFind ) => {
+    try {
+        const existingUser = await User.findOne( {socketId: socketIdToFind} );
+        return existingUser;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const update = async ( userEmailToUpdate, userFieldsToUpdate ) => {
     try {
         const updatedUser = await User.updateOne({email: userEmailToUpdate}, userFieldsToUpdate);
@@ -37,3 +47,4 @@ export const update = async ( userEmailToUpdate, userFieldsToUpdate ) => {
         throw error;
     }
 }
+

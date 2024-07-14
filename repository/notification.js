@@ -43,13 +43,11 @@ export const findById = async ( notificationId ) => {
 export const updateRead = async ( notificationId ) => {
     try {
         const updatedNotification = Notification.findOneAndUpdate(
-            { id: notificationId },
+            { _id: notificationId },
             { $set: { read: true } }, 
             { new: true } 
         );
-
         return updatedNotification;
-
     } catch (error) {
         throw error;
     }
