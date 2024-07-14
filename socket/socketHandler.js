@@ -13,7 +13,6 @@ export const joinRoom = async ( socket, data ) => {
 }
 
 export const disconnectUser = async ( socket ) => {
-    // mark connected in user table false
     try {
         const user = await findBySocketId(socket.id); 
         const valuesToUpdate = {

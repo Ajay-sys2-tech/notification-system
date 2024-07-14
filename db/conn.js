@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import 'dotenv/config';
 const uri = process.env.CONNECTION_URL;
-console.log(uri);
-
 
 const conn = mongoose.connect(uri)
   .then(() => console.log('Database Connected!'))

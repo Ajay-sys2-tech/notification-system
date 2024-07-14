@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /:
+ * /api/register:
  *   post:
  *     summary: User Registration
  *     description: Registers a new user with username, email, and password.

@@ -7,7 +7,6 @@ export const createNotification = async ( notification) => {
     try {
         const userId = notification.userId;
         const userExists = await findById( userId );
-        console.log("user:  ", userExists);
         if(!userExists){
             return {
                 error: "User does not exist"
@@ -21,7 +20,6 @@ export const createNotification = async ( notification) => {
                     value: notification.message
                 }];
             await sendNotificationToKafka(topic, message, );
-            // io.to(userEmail).emit(topic,  { message: newNotification.message, id: newNotification._id });
             return newNotification;
         }
     } catch (error) {

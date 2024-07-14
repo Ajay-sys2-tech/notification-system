@@ -8,7 +8,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /:
+ * /api/login:
  *   post:
  *     summary: User Login
  *     description: Logs in a user with their email and password, returning a token.

@@ -9,7 +9,6 @@ export const createUser = async ( user ) => {
 
         const existingUser = await findUser(user.email);
         if(existingUser){
-            console.log(existingUser);
             return {
                 data: "",
                 message: "",

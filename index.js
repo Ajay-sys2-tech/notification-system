@@ -5,7 +5,8 @@ import { Server } from "socket.io";
 import './db/conn.js';
 import './kafka/admin.js';
 import { startKafkaConsumer } from './kafka/consumer.js'
-import swaggerDocs from './swagger.js'
+import swaggerUi from 'swagger-ui-express'
+import {swaggerSpec} from './swagger.js'
 
 import userRegisterRoutes from './routes/userRegister.js';
 import userLoginRoutes from './routes/userLogin.js';
@@ -19,6 +20,7 @@ const io = new Server(server);
 
 app.use(bodyParser.json());
 app.use(express.static("./public"));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 startKafkaConsumer(io);
 socketConnection(io);
@@ -39,5 +41,5 @@ app.get('/*', (req, res) => {
 server.listen(PORT, () => {
     console.log(`server started on port ${PORT}`);
 })
-swaggerDocs(app, PORT)
+// swaggerDocs(app, PORT)
 export { io };

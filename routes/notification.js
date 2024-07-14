@@ -9,7 +9,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /:
+ * /api/notifications:
  *   post:
  *     summary: Create a Notification
  *     description: Creates a new notification for a specified user.
@@ -116,7 +116,7 @@ router.post("/", verifAdmin, messageValidator, async (req, res) => {
 
 /**
  * @swagger
- * /{id}:
+ * /api/notifications/{id}:
  *   get:
  *     summary: Get a Notification by ID
  *     description: Retrieves a specific notification using its ID.
@@ -190,7 +190,7 @@ router.get("/:id", verifyUser, async (req, res) => {
 
 /**
  * @swagger
- * /:
+ * /api/notifications:
  *   get:
  *     summary: Get Notifications
  *     description: Retrieves a list of notifications for the authenticated user, with pagination support.
@@ -290,7 +290,7 @@ router.get("/", verifyUser, async (req, res) => {
 
 /**
  * @swagger
- * /{id}:
+ * /api/notifications/{id}:
  *   put:
  *     summary: Mark Notification as Read
  *     description: Marks a specific notification as read by its ID.

@@ -13,7 +13,6 @@ export const startKafkaConsumer = async (io) => {
   await consumer.run({
     eachMessage: async ({ topic, message }) => {
       try {
-        // console.log(`${group}: [${topic}]:`, message.value.toString());
         const user = await find(message.key.toString());
         if(user.connected){
           io.to(message.key.toString()).emit(topic,  { message: message.value.toString() });

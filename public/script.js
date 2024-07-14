@@ -7,7 +7,6 @@ const startbtn = document.getElementById("startbtn");
 startbtn.addEventListener("click", async () => {
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value.trim();
-    console.log(email, password);
     console.log("Sending join notification request");
     // socket.emit('join', {email: email});
 
@@ -41,9 +40,6 @@ socket.on('notification', (notification) => {
       console.log(res);
     })
 
-    // function check(){
-    //   console.log(inputVal);
-    // }
     function disconnectSocket() {
       socket.disconnect(); // Disconnect the socket
       console.log('Socket disconnected');
