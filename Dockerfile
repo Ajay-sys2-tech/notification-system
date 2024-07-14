@@ -1,0 +1,16 @@
+FROM node:18
+WORKDIR /usr/src/app
+COPY . .
+RUN npm install
+
+ENV PORT=8080
+ENV CONNECTION_URL=
+ENV KAFKA_CLIENT_ID="my-app"
+ENV KAFKA_BROKER="kafka:9092"
+ENV KAFKA_TOPIC="notification"
+ENV KAFKA_NOTIFICATION_PARTITIONS=1
+ENV KAFKA_GROUP="notification-group"
+ENV JWT_SECRET=
+
+EXPOSE ${PORT}
+CMD ["node", "index.js"]
